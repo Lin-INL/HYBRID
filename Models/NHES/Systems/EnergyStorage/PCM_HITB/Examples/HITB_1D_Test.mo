@@ -3,9 +3,33 @@ model HITB_1D_Test
   "First discharge run with data read in the system."
 extends Modelica.Icons.Example;
   Real Position "Location of heat pipe where 0 is fully charging and 1 is fully discharging";
-  extends PCM_HITB.BaseClasses.Partial_SubSystem_A
-                                         (
-    redeclare replaceable NHES.Systems.EnergyStorage.PCM_HITB.CS.CS_Dummy CS,
+  extends PCM_HITB.BaseClasses.Partial_SubSystem_A(
+    redeclare replaceable NHES.Systems.EnergyStorage.PCM_HITB.CS.CS_Discharge1 CS(
+      Q_Vessel_HT(
+        tableOnFile=true,
+        tableName="tab1",
+        fileName=
+            "C:/Users/LINL/OneDrive - Idaho National Laboratory/LDRD2026/Hierarchical_DT/AR_DT_diagnosis/python_AR_DT/HITB_model/q_vessel.txt"),
+      HT_Lower(
+        tableOnFile=true,
+        tableName="tab1",
+        fileName=
+            "C:/Users/LINL/OneDrive - Idaho National Laboratory/LDRD2026/Hierarchical_DT/AR_DT_diagnosis/python_AR_DT/HITB_model/q_lowerht.txt"),
+      signal_position_lower(
+        tableOnFile=true,
+        tableName="tab1",
+        fileName=
+            "C:/Users/LINL/OneDrive - Idaho National Laboratory/LDRD2026/Hierarchical_DT/AR_DT_diagnosis/python_AR_DT/HITB_model/pos_lower.txt"),
+      HT_Upper(
+        tableOnFile=true,
+        tableName="tab1",
+        fileName=
+            "C:/Users/LINL/OneDrive - Idaho National Laboratory/LDRD2026/Hierarchical_DT/AR_DT_diagnosis/python_AR_DT/HITB_model/q_upperht.txt"),
+      signal_position_upper(
+        tableOnFile=true,
+        tableName="tab1",
+        fileName=
+            "C:/Users/LINL/OneDrive - Idaho National Laboratory/LDRD2026/Hierarchical_DT/AR_DT_diagnosis/python_AR_DT/HITB_model/pos_upper.txt")),
     redeclare PCM_HITB.Data.Data_System data,
     data_Initialization(
       T_PCM=523.15,
@@ -19,6 +43,7 @@ extends Modelica.Icons.Example;
       T_Tube_LGT=523.15,
       T_Insulation_LGT=523.15,
       T_LHP=523.15));
+
  // Modelica.Units.SI.Area A_Cyl_HITB[nV_Rh];
   parameter Integer nV_Z = 6;
   parameter Integer nV_Zh = 6;
@@ -66,8 +91,7 @@ extends Modelica.Icons.Example;
     T_Init=data_Initialization.T_PCM,
     redeclare package Insulation_Material =
         NHES.Systems.EnergyStorage.PCM_HITB.PCM_Materials.Insulator_aerogel,
-    redeclare package PCM_Material =
-        PCM_HITB.PCM_Materials.PCM_HITB_DensityFactor)
+    redeclare package PCM_Material = PCM_HITB.PCM_Materials.PCM_HITB_DensityFactor_alltuned)
     annotation (Placement(transformation(extent={{142,-60},{44,42}})));
 
   PCM_HITB.Guide_Tube_New_Air_Inputs Lower_Guide_Tube(
@@ -160,10 +184,9 @@ extends Modelica.Icons.Example;
   Modelica.Thermal.HeatTransfer.Components.ThermalCollector thermalCollector(m=
         nV_Z)
     annotation (Placement(transformation(extent={{-150,-8},{-130,12}})));
-  Modelica.Thermal.HeatTransfer.Components.ThermalCollector thermalCollector1(m
-      =nV_Z)
+  Modelica.Thermal.HeatTransfer.Components.ThermalCollector thermalCollector1(m=
+       nV_Z)
     annotation (Placement(transformation(extent={{-40,-32},{-20,-12}})));
-protected
 
 equation
   time_plot = time+91000;
@@ -240,12 +263,12 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(thermalCollector1.port_b, PCM_Core.port_b[2]) annotation (Line(points
-        ={{-30,-32},{-30,-38},{-10,-38},{-10,48},{86.14,48},{86.14,0.435}},
+  connect(thermalCollector1.port_b, PCM_Core.port_b[2]) annotation (Line(points={{-30,-32},
+          {-30,-38},{-10,-38},{-10,48},{86.14,48},{86.14,1.71}},
         color={191,0,0}));
-  connect(thermalCollector.port_b, PCM_Core.port_b[1]) annotation (Line(points=
-          {{-140,-8},{-140,-14},{-46,-14},{-46,0},{-10,0},{-10,48},{86.14,48},{
-          86.14,-2.115}}, color={191,0,0}));
+  connect(thermalCollector.port_b, PCM_Core.port_b[1]) annotation (Line(points={{-140,-8},
+          {-140,-14},{-46,-14},{-46,0},{-10,0},{-10,48},{86.14,48},{86.14,-3.39}},
+                          color={191,0,0}));
   connect(thermalCollector1.port_a, Lower_Guide_Tube.port_battery) annotation (
       Line(points={{-30,-12},{-30,-6},{-12,-6},{-12,-68},{45,-68},{45,-48.22}},
         color={191,0,0}));
@@ -382,7 +405,7 @@ equation
           endAngle=360)}),                                       Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},{200,120}})),
     experiment(
-      StopTime=90000,
+      StopTime=250000,
       __Dymola_NumberOfIntervals=100,
       __Dymola_Algorithm="Dassl"));
 end HITB_1D_Test;

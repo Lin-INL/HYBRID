@@ -6,6 +6,7 @@ model PCM_StorageVessel_1D "Reducing model to radial vector only."
   parameter Integer n_HPs = 2 "Modeled number of heat pipe locations";
   parameter Integer n_Thermocouples = 9;
   parameter Real k_multparam = 1.0;
+  parameter Real fillFraction(min=0, max=1) = 0.8;
 
   parameter Modelica.Units.SI.Length R_HP = 1.325*25.4/1000;
   parameter Modelica.Units.SI.Length R_PCM = 0.295275;
@@ -190,7 +191,7 @@ equation
    // Q_heat[k,1] = port_b[k,1].Q_flow*HPFrac[1];
    // Q_heat[k,2] = port_b[k,2].Q_flow*HPFrac[2];
       for l in 1:n_HPs loop
-        Q_heat[l] = port_b[l].Q_flow*HPFrac[l];
+        Q_heat[l] = fillFraction*port_b[l].Q_flow*HPFrac[l];
         port_b[l].T = conduction.materials[nR_HP].T;
       end for;
  // end for;
