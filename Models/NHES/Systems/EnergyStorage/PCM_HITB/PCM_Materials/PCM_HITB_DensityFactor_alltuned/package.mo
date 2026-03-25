@@ -27,7 +27,7 @@ package PCM_HITB_DensityFactor_alltuned "PCM_HITB_using_sin_and_cos"
   constant Real fT(unit = "1/K") = Modelica.Constants.pi/(T_meltplus-T_meltmin);
   //constant Real fT(unit = "1/K") = 2*Modelica.Constants.pi/(T_meltplus-T_meltmin);
                                                                                   //New constant
-  constant Real k_slope_mult(unit = "W/m.K.K") = -0.00804;
+  constant Real k_slope_mult(unit = "W/m.K.K") = -0.00402;
                                                 //slope for conductivity
   constant Real k_mult_solid(unit = "W/m.K") = 168;
                                                 //intercept for solid conductivity
