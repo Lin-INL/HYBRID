@@ -227,7 +227,6 @@ extends Modelica.Icons.Example;
     annotation (Placement(transformation(extent={{-116,4},{-96,24}})));
   Components.RMSE_Calculator rMSE_Calculator
     annotation (Placement(transformation(extent={{-78,22},{-58,42}})));
-protected
 
 equation
   time_plot = time+91000;

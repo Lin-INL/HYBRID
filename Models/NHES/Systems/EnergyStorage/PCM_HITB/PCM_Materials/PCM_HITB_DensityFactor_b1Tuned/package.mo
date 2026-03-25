@@ -40,7 +40,8 @@ package PCM_HITB_DensityFactor_b1Tuned "PCM_HITB_using_sin_and_cos"
   constant Real tanh_beta = 0.5;
                                 // numerical "sharpness" for phase transition
 
-  constant Real density_mult = 0.55 annotation(Dialog(tab = "General"));
+  constant Real density_mult = 1.0 annotation(Dialog(tab = "General"));
+  //0.55
 
   redeclare function extends specificEnthalpy
     "Specific enthalpy"
@@ -88,8 +89,8 @@ protected
   algorithm
     //solid := 2380*density_mult;
     //liquid := 2380*density_mult;
-    solid := rho_solid*density_mult;
-    liquid := rho_liquid*density_mult;
+    solid := rho_solid;
+    liquid := rho_liquid;
     d := tanh_beta*(Modelica.Math.tanh(2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*liquid + tanh_beta*(Modelica.Math.tanh(-2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*solid;
   end density;
 
