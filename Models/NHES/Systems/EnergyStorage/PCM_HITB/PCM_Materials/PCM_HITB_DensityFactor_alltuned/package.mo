@@ -7,9 +7,9 @@ package PCM_HITB_DensityFactor_alltuned "PCM_HITB_using_sin_and_cos"
     T_min=273.15,
     T_max=1100);
 
-  constant Real melt_band(unit = "K") = 2;
+  constant Real melt_band(unit = "K") = 17.1178;
                                         //melting band for phase change
-  constant Modelica.Units.SI.Temperature T_melt = 703.15;
+  constant Modelica.Units.SI.Temperature T_melt = 715.068;
   constant Modelica.Units.SI.Temperature T_meltmin = T_melt-melt_band;
   constant Modelica.Units.SI.Temperature T_meltplus = T_melt+melt_band;
   constant Real m1(unit = "J/(kg.K.K)") = 0.194;
@@ -22,16 +22,16 @@ package PCM_HITB_DensityFactor_alltuned "PCM_HITB_using_sin_and_cos"
  constant Real b3(unit = "J/(kg.K)") = 1188.57;
  // constant Real b3(unit = "J/(kg.K)") = 1588.57;
                                                  //y-intercept during liquid state
-  constant Real h_melt(unit = "J/kg") = 120000;
+  constant Real h_melt(unit = "J/kg") = 176034;
                                                 //latent heat of fusion
   constant Real fT(unit = "1/K") = Modelica.Constants.pi/(T_meltplus-T_meltmin);
   //constant Real fT(unit = "1/K") = 2*Modelica.Constants.pi/(T_meltplus-T_meltmin);
                                                                                   //New constant
-  constant Real k_slope_mult(unit = "W/m.K.K") = -0.00402;
+  constant Real k_slope_mult(unit = "W/m.K.K") = -0.00367499;
                                                 //slope for conductivity
-  constant Real k_mult_solid(unit = "W/m.K") = 168;
+  constant Real k_mult_solid(unit = "W/m.K") = 146.318;
                                                 //intercept for solid conductivity
-  constant Real k_mult_liquid(unit = "W/m.K") = 139.625;
+  constant Real k_mult_liquid(unit = "W/m.K") = 61.8211;
                                                 //intercept for liquid conductivity
   constant Real rho_solid(unit = "kg/m.m.m") = 2600;
                                                 //solid density
@@ -40,7 +40,7 @@ package PCM_HITB_DensityFactor_alltuned "PCM_HITB_using_sin_and_cos"
   constant Real tanh_beta = 0.5;
                                 // numerical "sharpness" for phase transition
 
-  constant Real density_mult = 0.2 annotation(Dialog(tab = "General"));
+  constant Real density_mult = 0.618666 annotation(Dialog(tab = "General"));
   //0.55
 
   redeclare function extends specificEnthalpy
@@ -89,8 +89,8 @@ protected
   algorithm
     //solid := 2380*density_mult;
     //liquid := 2380*density_mult;
-    solid := rho_solid;
-    liquid := rho_liquid;
+    solid := rho_solid*density_mult;
+    liquid := rho_liquid*density_mult;
     d := tanh_beta*(Modelica.Math.tanh(2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*liquid + tanh_beta*(Modelica.Math.tanh(-2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*solid;
   end density;
 
@@ -147,4 +147,4 @@ protected
     algorithm
     alpha := tanh_beta*(Modelica.Math.tanh(Modelica.Constants.pi*(state.T-T_meltmin)/(T_meltplus-T_melt))+1)*liquid;
     end linearExpansionCoefficient;
-end PCM_HITB_DensityFactor_b1Tuned;
+end PCM_HITB_DensityFactor_alltuned;
