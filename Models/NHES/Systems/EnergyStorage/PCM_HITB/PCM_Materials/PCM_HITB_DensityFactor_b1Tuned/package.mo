@@ -87,10 +87,10 @@ protected
     Modelica.Units.SI.Density solid;
     Modelica.Units.SI.Density liquid;
   algorithm
-    //solid := 2380*density_mult;
-    //liquid := 2380*density_mult;
-    solid := rho_solid;
-    liquid := rho_liquid;
+    solid := 2380*density_mult;
+    liquid := 2380*density_mult;
+    //solid := rho_solid;
+    //liquid := rho_liquid;
     d := tanh_beta*(Modelica.Math.tanh(2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*liquid + tanh_beta*(Modelica.Math.tanh(-2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*solid;
   end density;
 
